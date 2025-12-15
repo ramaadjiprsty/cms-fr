@@ -7,21 +7,25 @@
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
+  moduleFormat = "cjs"  
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model Passengers {
-  userId      String   @id @default(uuid())
-  fullName    String
-  email       String   @unique
-  password    String
-  phoneNumber String?  @unique
-  profilePic  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model User {
+  id           String   @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String   @unique
+  password     String
+  phoneNumber  String?  @unique
+  profilePic   String?
+  Role         Role     @default(PASSENGER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  tickets      Ticket[]
 }
 
 model Harbor {
@@ -41,7 +45,24 @@ model Schedule {
   destinationHarbor   Harbor   @relation("DestinationHarbor", fields: [destinationHarborId], references: [id])
   etd                 DateTime
   eta                 DateTime
-  status              String   @default("SCHEDULED")
+  status              String   @default("SCHEDULED") // SCHEDULED, DEPARTED, ARRIVED
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+  tickets             Ticket[]
+}
+
+model Ticket {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  scheduleId    String
+  schedule      Schedule @relation(fields: [scheduleId], references: [id])
+  passengerName String
+  seatNumber    String?
+  createdAt     DateTime @default(now())
+}
+
+enum Role {
+  PASSENGER
+  ADMIN
 }
