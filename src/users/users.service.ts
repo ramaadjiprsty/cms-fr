@@ -3,8 +3,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from './entities/user.entity';
-import { QueryUserDto } from './dto/query-user.dto';
 import { Prisma } from 'generated/client';
+import { QueryUserDto } from './dto/query-user.dto';
 
 export const roundOfHashing = 10;
 

@@ -6,6 +6,8 @@ export class UserEntity implements User {
   constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial);
   }
+
+  @Exclude()
   id: string;
 
   @ApiProperty({
@@ -36,12 +38,15 @@ export class UserEntity implements User {
   })
   phoneNumber: string | null;
 
+  @Exclude()
   profilePic: string | null;
 
   @Exclude()
   Role: Role;
 
+  @Exclude()
   createdAt: Date;
 
+  @Exclude()
   updatedAt: Date;
 }
