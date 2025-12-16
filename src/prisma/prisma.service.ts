@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient, Prisma } from 'generated/prisma/client';
+import { PrismaClient, Prisma } from 'generated/client';
 import { InjectPinoLogger, PinoLogger } from 'pino-nestjs';
-import { Pool } from 'pg'; // <--- Ini wajib ada
+import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 @Injectable()
@@ -14,11 +14,11 @@ export class PrismaService
   ) {
     const isProduction = process.env.NODE_ENV === 'production';
 
-    // 1. Setup Connection Pool
+    // Setup Connection Pool
     const connectionString = `${process.env.DATABASE_URL}`;
     const pool = new Pool({ connectionString });
 
-    // 2. Setup Adapter
+    // Setup Adapter
     const adapter = new PrismaPg(pool);
 
     super({
