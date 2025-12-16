@@ -8,13 +8,15 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 import { UserEntity } from './entities/user.entity';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'pino-nestjs';
 import { QueryUserDto } from './dto/query-user.dto';
+import { JwtAuthGuard } from 'src/auth/guard/jwt.auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -31,6 +33,8 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity, isArray: true })
   async findAll(
     @Query() query: QueryUserDto,
@@ -48,12 +52,16 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async findById(@Param('id', ParseUUIDPipe) id: string): Promise<UserEntity> {
     return new UserEntity(await this.usersService.findById(id));
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -63,6 +71,8 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async delete(@Param('id', ParseUUIDPipe) id: string): Promise<UserEntity> {
     return new UserEntity(await this.usersService.remove(id));
