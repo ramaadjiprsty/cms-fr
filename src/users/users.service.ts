@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from './entities/user.entity';
 import { QueryUserDto } from './dto/query-user.dto';
@@ -133,5 +133,12 @@ export class UsersService {
       },
       data: users.map((user) => new UserEntity(user)),
     };
+  }
+
+  async update(id: string, dto: UpdateUserDto): Promise<UserEntity> {
+    return this.prismaService.user.update({
+      where: { id },
+      data: dto,
+    });
   }
 }
