@@ -1,25 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { CreateHarborDto } from './dto/harbor.dto';
+import { CreateHarborDto, UpdateHarborDto } from './dto/harbor.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class HarborsService {
+  constructor(private prisma: PrismaService) {}
+
   create(createHarborDto: CreateHarborDto) {
-    return 'This action adds a new harbor';
+    return this.prisma.harbor.create({
+      data: createHarborDto,
+    });
   }
 
   findAll() {
-    return `This action returns all harbors`;
+    return this.prisma.harbor.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} harbor`;
+    return this.prisma.harbor.findUnique({
+      where: { id },
+    });
   }
 
   update(id: number, updateHarborDto: UpdateHarborDto) {
-    return `This action updates a #${id} harbor`;
+    return this.prisma.harbor.update({
+      where: { id },
+      data: updateHarborDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} harbor`;
+    return this.prisma.harbor.delete({
+      where: { id },
+    });
   }
 }
