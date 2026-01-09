@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { LoggerModule } from 'pino-nestjs';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { CombinedModule } from './combined/combined.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     PrismaModule,
     UsersModule,
+    CombinedModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
