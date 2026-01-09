@@ -10,7 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 import { UserEntity } from './entities/user.entity';
 import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
@@ -65,7 +65,7 @@ export class UsersController {
   @ApiOkResponse({ type: UserEntity })
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto: CreateUserDto,
+    @Body() dto: UpdateUserDto,
   ): Promise<UserEntity> {
     return new UserEntity(await this.usersService.update(id, dto));
   }
