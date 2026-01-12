@@ -12,7 +12,7 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
   constructor(
     private prismaService: PrismaService,
-    private jwtService: JwtService,
+    private jwtService: JwtService, 
   ) {}
 
   async login(email: string, password: string): Promise<AuthEntity> {
@@ -31,7 +31,11 @@ export class AuthService {
     }
 
     return {
-      accessToken: this.jwtService.sign({ userId: user.id }),
+      accessToken: this.jwtService.sign({ 
+        userId: user.id,
+        // agar sesuai dengan Consumer di APISIX
+        key: "user-key"
+      }),
     };
   }
 }
